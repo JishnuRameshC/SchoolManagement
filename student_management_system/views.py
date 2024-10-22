@@ -28,6 +28,17 @@ class StudentListView(ListView):
     model = Student
     template_name = 'student_list.html'
 
+class StudentUpdateView(UpdateView):
+    model = Student
+    form_class = StudentForm
+    template_name = 'student_form.html'
+    success_url = reverse_lazy('student-list')
+
+class StudentDeleteView(DeleteView):
+    model = Student
+    template_name = 'student_confirm_delete.html'
+    success_url = reverse_lazy('student-list')
+
 
 # class StudentListView(RoleRequiredMixin, ListView):
 #     model = Student

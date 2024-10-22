@@ -66,19 +66,25 @@ class StudentForm(forms.ModelForm):
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
-        if Student.objects.filter(email=email).exists():
-            raise ValidationError("A user with this email already exists.")
+        if email:
+            # Get the current instance (if any) being updated
+            current_instance = getattr(self, 'instance', None)
+            if current_instance and Student.objects.filter(email=email).exclude(pk=current_instance.pk).exists():
+                raise ValidationError("A user with this email already exists.")
         return email
 
     def clean_phone_number(self):
         phone_number = self.cleaned_data.get('phone_number')
-        if phone_number and Student.objects.filter(phone_number=phone_number).exists():
-            raise ValidationError("A user with this phone number already exists.")
+        if phone_number:
+            # Get the current instance (if any) being updated
+            current_instance = getattr(self, 'instance', None)
+            if current_instance and Student.objects.filter(phone_number=phone_number).exclude(pk=current_instance.pk).exists():
+                raise ValidationError("A user with this phone number already exists.")
         return phone_number
 
     def clean_dob(self):
         dob = self.cleaned_data.get('dob')
-        # Additional validation: e.g., check if the date is in the past
+
         if dob and dob >= date.today():
             raise ValidationError("Date of Birth must be in the past.")
         return dob

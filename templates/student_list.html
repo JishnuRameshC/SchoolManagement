@@ -28,7 +28,7 @@
             <td>{{ student.grade }}</td>
             <td>{{ student.dob }}</td>
             <td>{{ student.address }}</td>
-            <td><a href="#" class="btn">Delete</a> <a href="#" class="btn">Edit</a></td>
+            <td><a href="{% url 'student-delete' student.pk %}" class="btn btn-danger">Delete</a> <a href="{% url 'student-update' student.pk %}" class="btn btn-primary">Edit</a></td>
           </tr>
         {% endfor %}         
         </tbody>
@@ -37,7 +37,7 @@
   </div>
   <ul>
     {% for student in object_list %}
-    <li>{{ student.first_name }} {{ student.last_name }} - <a href="#">Edit</a> - <a href="#">Delete</a></li>
+    <li>{{ student.first_name }} {{ student.last_name }} - <a class="btn btn-primary" href="{% url 'student-update' student.pk %}">Edit</a> - <a href="#">Delete</a></li>
 
       {% comment %} <li>{{ student.first_name }} {{ student.last_name }} - <a href="{% url 'student-update' student.pk %}">Edit</a> - <a href="{% url 'student-delete' student.pk %}">Delete</a></li> {% endcomment %}
     {% endfor %}
