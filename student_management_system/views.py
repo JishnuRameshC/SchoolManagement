@@ -1,8 +1,8 @@
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
-from .models import Student
-from .forms import StudentForm
+from .models import Student,LibraryRecord
+from .forms import StudentForm,LibraryForm
 
 class RoleRequiredMixin(UserPassesTestMixin):
     role_required = None
@@ -38,6 +38,35 @@ class StudentDeleteView(DeleteView):
     model = Student
     template_name = 'student_confirm_delete.html'
     success_url = reverse_lazy('student-list')
+
+class LibaryCreateView(CreateView):
+    model = LibraryRecord
+    form_class = LibraryForm
+    template_name = 'libary_form.html'
+    success_url = reverse_lazy('library-list')
+
+    def form_valid(self, form):
+        print("Form is valid!")
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        print("Form is invalid!", form.errors)
+        return super().form_invalid(form)
+    
+class LibraryListView(ListView):
+    model = LibraryRecord
+    template_name = 'libary_list.html'
+
+class LibaryUpdateView(UpdateView):
+    model = LibraryRecord
+    form_class = LibraryForm
+    template_name = 'library_form.html'
+    success_url = reverse_lazy('library-list')
+
+class LibraryDeleteView(DeleteView):
+    model = LibraryRecord
+    template_name = 'library_confirm_delete.html'
+    success_url = reverse_lazy('library-list')
 
 
 # class StudentListView(RoleRequiredMixin, ListView):

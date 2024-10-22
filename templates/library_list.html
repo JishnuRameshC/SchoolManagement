@@ -1,0 +1,37 @@
+{% extends "shared/base.html" %}
+{% load static %}
+{% block content %}
+
+  <h2 class="fw-bold fs-4 my-3">Libary List</h2>
+  <a class="btn btn-primary" href="{% url 'libary-create' %}">Create New Libary record</a>
+  <div class="row">
+    <div class="col-12">
+    
+      <table class="table table-striped">
+        <thead>
+          <tr class="highlight">
+            <th scope="col">student</th>
+            <th scope="col">book_title</th>
+            <th scope="col">book_id</th>
+            <th scope="col">borrowed_date</th>
+            <th scope="col">due_date</th>
+            <th scope="col">Status </th>
+          </tr>
+        </thead>
+        {% for lib in object_list %}
+        <tbody>
+          <tr>
+            <td>{{ lib.student }}</td>
+            <td>{{ lib.book_title }}</td>
+            <td>{{ lib.book_id }}</td>
+            <td>{{ lib.borrowed_date }}</td>
+            <td>{{ lib.due_date }}</td>
+            <td>{% if lib.returned_date %}returned : {{lib.returned_date}} {% else %} pending {% endif %} </td>
+            <td><a href="#" class="btn btn-danger">Delete</a> <a href="{% url 'student-update' lib.pk %}" class="btn btn-primary">Edit</a></td>
+          </tr>
+        {% endfor %}          
+        </tbody>
+      </table>
+    </div>
+  </div>
+{% endblock %}

@@ -1,6 +1,6 @@
 from datetime import date
 from django import forms
-from .models import Student
+from .models import Student,LibraryRecord
 from django.core.validators import EmailValidator
 from django.forms import CharField, TextInput, DateField, ChoiceField, DateInput
 from django.core.exceptions import ValidationError
@@ -97,3 +97,16 @@ class StudentForm(forms.ModelForm):
         # Check if both first name and last name are provided
         if not first_name or not last_name:
             raise ValidationError("Both first name and last name are required.")
+        
+
+class LibraryForm(forms.ModelForm):
+    class Meta:
+        model = LibraryRecord
+        fields = ['student', 'book_title', 'book_id', 'borrowed_date', 'due_date', 'remarks']
+
+    student = forms.ModelChoiceField(queryset=Student.objects.all(), widget=forms.Select(attrs={'class': 'form-control'}))
+    book_title = forms.CharField(max_length=200, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    book_id = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    borrowed_date = forms.DateField(widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}))
+    due_date = forms.DateField(widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}))
+    remarks = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control'}))
