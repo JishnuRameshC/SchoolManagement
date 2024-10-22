@@ -1,10 +1,45 @@
 {% extends "base.html" %}
+{% load static %}
 {% block content %}
-  <h2>Student List</h2>
+
+  <h2 class="fw-bold fs-4 my-3">Student List</h2>
+  <a class="btn btn-primary" href="{% url 'student-create' %}">Create New Student</a>
+  <div class="row">
+    <div class="col-12">
+    
+      <table class="table table-striped">
+        <thead>
+          <tr class="highlight">
+            <th scope="col">student_number</th>
+            <th scope="col">full_name</th>
+            <th scope="col">email</th>
+            <th scope="col">class</th>
+            <th scope="col">dob</th>
+            <th scope="col">address</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        {% for student in object_list %}
+        <tbody>
+          <tr>
+            <td>{{ student.student_number }}</td>
+            <td>{{ student.full_name }}</td>
+            <td>{{ student.email }}</td>
+            <td>{{ student.grade }}</td>
+            <td>{{ student.dob }}</td>
+            <td>{{ student.address }}</td>
+            <td><a href="#" class="btn">Delete</a> <a href="#" class="btn">Edit</a></td>
+          </tr>
+        {% endfor %}         
+        </tbody>
+      </table>
+    </div>
+  </div>
   <ul>
     {% for student in object_list %}
-      <li>{{ student.first_name }} {{ student.last_name }} - <a href="{% url 'student-update' student.pk %}">Edit</a> - <a href="{% url 'student-delete' student.pk %}">Delete</a></li>
+    <li>{{ student.first_name }} {{ student.last_name }} - <a href="#">Edit</a> - <a href="#">Delete</a></li>
+
+      {% comment %} <li>{{ student.first_name }} {{ student.last_name }} - <a href="{% url 'student-update' student.pk %}">Edit</a> - <a href="{% url 'student-delete' student.pk %}">Delete</a></li> {% endcomment %}
     {% endfor %}
   </ul>
-  <a href="{% url 'student-create' %}">Create New Student</a>
 {% endblock %}

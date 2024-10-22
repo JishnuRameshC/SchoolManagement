@@ -1,0 +1,19 @@
+<nav class="navbar navbar-expand px-4 py-3">
+    {% comment %} <form action="#" class="d-none d-sm-inline-block">heading bs5-serch</form> {% endcomment %}
+    <form class="d-flex">
+        <input class="form-control me 2" type='search' placeholder="search" value="">
+        <button class="btn btn-outline-info" type="send">search</button>
+    </form>
+    <div class="navbar-collapse collapse">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item dropdown">
+          <a href="#" data-bs-toggle="dropdown" class="nav-icon pe-md-0">
+            {% comment %} <img src="/account.png" class="avatar img-fluid" alt="image here" /> {% endcomment %}
+        </a>
+          <div class="dropdown-menu dropdown-menu-end rounded">
+            <a href="#">logout</a>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>

@@ -2,6 +2,10 @@ from django.db import models
 
 # Create your models here.
 class Student(models.Model):
+    GENDER_CHOICES = (
+        ('M', 'Male'),
+        ('F', 'Female'),
+    )
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     full_name = models.CharField(max_length=200, blank=True)
@@ -11,6 +15,8 @@ class Student(models.Model):
     dob = models.DateField(verbose_name='Date of Birth')
     address = models.TextField()
     grade = models.CharField(max_length=10, verbose_name="Class/Grade")
+    
+    gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
 
     def save(self, *args, **kwargs):
         self.full_name = f"{self.first_name} {self.last_name}"
@@ -18,6 +24,15 @@ class Student(models.Model):
 
     def __str__(self):
         return f"({self.student_number}) {self.full_name} ({self.email})"
+
+class Library(models.Model):
+    book_title = models.CharField(max_length=200)
+    author = models.CharField(max_length=200)
+    publisher = models.CharField(max_length=200)
+    quantity = models.PositiveIntegerField()
+    available = models.PositiveIntegerField()
+    description = models.TextField(blank=True, null=True)
+
 
 class LibraryHistory(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
