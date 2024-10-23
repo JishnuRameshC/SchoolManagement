@@ -1,0 +1,47 @@
+{% extends "shared/base.html" %}
+{% load static %}
+{% block content %}
+
+  <h2 class="fw-bold fs-4 my-3">Fees record</h2>
+  <a class="btn btn-primary" href="{% url 'fees-create' %}">Create New Fees record</a>
+  <div class="row">
+    <div class="col-12">
+    
+      <table class="table table-striped">
+        <thead>
+          <tr class="highlight">
+            <th scope="col">Student</th>
+            <th scope="col">fees_type</th>
+            <th scope="col">Amount</th>
+            <th scope="col">paid_date</th>
+            <th scope="col">payment_status</th>
+            <th scope="col">Remark</th>
+            <th scope="col">Created by</th>
+            <th scope="col">Created at</th>
+            <th scope="col">Updated at</th>
+            <th scope="col"> </th>
+
+
+          </tr>
+        </thead>
+        {% for fees in object_list %}
+        <tbody>
+          <tr>
+            <td>{{fees.student}}</td>
+            <td>{{fees.amount}}</td>
+            <td>{{fees.due_date}}</td>
+            <td>{{fees.paid_date}}</td>
+            <td>{{fees.payment_status}}</td>
+            <td>{{fees.remarks}}</td>
+            <td>{{fees.created_by}}</td>
+            <td>{{fees.created_at}}</td>
+            <td>{{fees.updated_at}}</td>
+
+            <td><a href="{% url 'fees-delete' fees.pk %}" class="btn btn-danger">Delete</a> <a href="{% url 'fees-update' fees.pk %}" class="btn btn-primary">Edit</a></td>
+          </tr>
+        {% endfor %}          
+        </tbody>
+      </table>
+    </div>
+  </div>
+{% endblock %}

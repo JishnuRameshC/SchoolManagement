@@ -1,8 +1,8 @@
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
-from .models import Student,LibraryRecord
-from .forms import StudentForm,LibraryForm
+from .models import Student,LibraryRecord,FeesRecord
+from .forms import StudentForm,LibraryForm,FeesForm
 
 class RoleRequiredMixin(UserPassesTestMixin):
     role_required = None
@@ -55,7 +55,7 @@ class LibaryCreateView(CreateView):
     
 class LibraryListView(ListView):
     model = LibraryRecord
-    template_name = 'libary_list.html'
+    template_name = 'library_list.html'
 
 class LibaryUpdateView(UpdateView):
     model = LibraryRecord
@@ -67,6 +67,35 @@ class LibraryDeleteView(DeleteView):
     model = LibraryRecord
     template_name = 'library_confirm_delete.html'
     success_url = reverse_lazy('library-list')
+
+class FeesListView(ListView):
+    model = FeesRecord
+    template_name = 'fees_list.html'
+
+class FeesCreateView(CreateView):
+    model = FeesRecord
+    form_class = FeesForm
+    template_name = 'fees_form.html'
+    success_url = reverse_lazy('fees-list')
+
+    def form_valid(self, form):
+        print("Form is valid!")
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        print("Form is invalid!", form.errors)
+        return super().form_invalid(form)
+
+class FeesUpdateView(UpdateView):
+    model = FeesRecord
+    form_class = FeesForm
+    template_name = 'fees_form.html'
+    success_url = reverse_lazy('fees-list')
+
+class FeesDeleteView(DeleteView):
+    model = FeesRecord
+    template_name = 'fees_confirm_delete.html'
+    success_url = reverse_lazy('fees-list')
 
 
 # class StudentListView(RoleRequiredMixin, ListView):

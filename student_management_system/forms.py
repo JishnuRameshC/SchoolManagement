@@ -1,6 +1,6 @@
 from datetime import date
 from django import forms
-from .models import Student,LibraryRecord
+from .models import Student,LibraryRecord,FeesRecord
 from django.core.validators import EmailValidator
 from django.forms import CharField, TextInput, DateField, ChoiceField, DateInput
 from django.core.exceptions import ValidationError
@@ -109,4 +109,22 @@ class LibraryForm(forms.ModelForm):
     book_id = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'class': 'form-control'}))
     borrowed_date = forms.DateField(widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}))
     due_date = forms.DateField(widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}))
+    remarks = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control'}))
+
+
+class FeesForm(forms.ModelForm):
+    class Meta:
+        model = FeesRecord
+        fields = '__all__'
+
+    due_date = forms.DateField(widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}))
+    paid_date = forms.DateField(widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}))
+    payment_status = ChoiceField(
+        label="Payment Status",
+        choices=[('pending', 'Pending'),
+            ('partial', 'Partially Paid'),
+            ('paid', 'Paid'),],
+        required=True,
+        widget=forms.Select(attrs={"class": "form-control"}),
+    )
     remarks = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control'}))

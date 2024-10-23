@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator
 from decimal import Decimal
+
+from django.urls import reverse
 from accounts.models import CustomUser
 from django.conf import settings
 
@@ -16,10 +18,7 @@ class Student(models.Model):
     last_name = models.CharField(max_length=100)
     full_name = models.CharField(max_length=200, blank=True)
     student_number = models.AutoField(primary_key=True)
-    email = models.EmailField(unique=True)
-    phone_number = models.CharField(max_length=15)
     dob = models.DateField(verbose_name='Date of Birth')
-    address = models.TextField()
     grade = models.CharField(max_length=10)
     section = models.CharField(max_length=5)
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
@@ -39,6 +38,9 @@ class Student(models.Model):
     class Meta:
         ordering = ['grade', 'section', 'first_name']
 
+    def get_absolute_url(self):
+        return reverse('student_detail', kwargs={'pk': self.pk})
+
 class LibraryRecord(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='library_records')
     book_title = models.CharField(max_length=200)
@@ -54,9 +56,11 @@ class LibraryRecord(models.Model):
     def __str__(self):
         return f"{self.student.registration_number} - {self.book_title}"
 
+    class Meta:
+        ordering = ['-created_at']
+
 class FeesRecord(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='fees_records')
-    fee_type = models.CharField(max_length=50)
     amount = models.DecimalField(
         max_digits=10, 
         decimal_places=2,
@@ -64,15 +68,15 @@ class FeesRecord(models.Model):
     )
     due_date = models.DateField()
     paid_date = models.DateField(null=True, blank=True)
-    payment_status = models.CharField(
-        max_length=20,
-        choices=[
+    payment_status_choices =(
             ('pending', 'Pending'),
             ('partial', 'Partially Paid'),
             ('paid', 'Paid'),
-        ],
-        default='pending'
-    )
+        )
+    payment_status = models.CharField(
+        max_length=20,
+        choices=payment_status_choices,
+        default='pending',)
     remarks = models.TextField(blank=True)
     created_by = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -80,3 +84,6 @@ class FeesRecord(models.Model):
 
     def __str__(self):
         return f"{self.student.registration_number} - {self.fee_type} - {self.amount}"
+
+    class Meta:
+        ordering = ['-created_at']

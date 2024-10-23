@@ -3,7 +3,7 @@
 {% block content %}
 
   <h2 class="fw-bold fs-4 my-3">Libary List</h2>
-  <a class="btn btn-primary" href="{% url 'libary-create' %}">Create New Libary record</a>
+  <a class="btn btn-primary" href="{% url 'library-create' %}">Create New Libary record</a>
   <div class="row">
     <div class="col-12">
     
@@ -27,7 +27,7 @@
             <td>{{ lib.borrowed_date }}</td>
             <td>{{ lib.due_date }}</td>
             <td>{% if lib.returned_date %}returned : {{lib.returned_date}} {% else %} pending {% endif %} </td>
-            <td><a href="#" class="btn btn-danger">Delete</a> <a href="{% url 'student-update' lib.pk %}" class="btn btn-primary">Edit</a></td>
+            <td><a href="{% url 'library-delete' lib.pk %}" class="btn btn-danger">Delete</a> <a href="{% url 'library-update' lib.pk %}" class="btn btn-primary">Edit</a></td>
           </tr>
         {% endfor %}          
         </tbody>
