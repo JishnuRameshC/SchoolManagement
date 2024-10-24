@@ -1,9 +1,46 @@
 {% extends 'shared/base.html' %}
 {% block content %}
-  <h2 class="fw-bold fs-4 my-3">Fees</h2>
+  <h2 class="fw-bold fs-4 my-3">Fees Record</h2>
   <form method="POST">
     {% csrf_token %}
-    {{form.as_p}}
+
+    <div class="col">
+      {{ form.student.label }}
+      {{ form.student }}
+      {{ form.student.errors }} 
+    </div>
+    <div class="col">
+      {{ form.amount.label }}
+      {{ form.amount }}
+      {{ form.amount.errors }} 
+    </div>
+    <div class="col">
+      {{ form.paid_date.label }}
+      {{ form.paid_date }}
+      {{ form.paid_date.errors }} 
+    </div>
+    <div class="col">
+      {{ form.due_date.label }}
+      {{ form.due_date }}
+      {{ form.due_date.errors }} 
+    </div>
+    <div class="col">
+      {{ form.payment_status.label }}
+      {{ form.payment_status }}
+      {{ form.payment_status.errors }} 
+    </div>
+    <div class="col">
+      {{ form.remarks.label }}
+      {{ form.remarks }}
+      {{ form.remarks.errors }} 
+    </div>
+    <div class="col">
+      {{ form.created_by.label }}
+      {{ form.created_by }}
+      {{ form.created_by.errors }} 
+    </div>
+
+
     <button class="btn btn-primary" type="submit">Save</button>
 </form>
 

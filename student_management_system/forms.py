@@ -119,12 +119,10 @@ class FeesForm(forms.ModelForm):
 
     due_date = forms.DateField(widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}))
     paid_date = forms.DateField(widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}))
-    payment_status = ChoiceField(
-        label="Payment Status",
-        choices=[('pending', 'Pending'),
-            ('partial', 'Partially Paid'),
-            ('paid', 'Paid'),],
+    payment_status = forms.CharField(widget=forms.Select(attrs={'class': 'form-control'}))
+    remarks = ChoiceField(
+        label="Remarks",    
+        choices=[],
         required=True,
         widget=forms.Select(attrs={"class": "form-control"}),
     )
-    remarks = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control'}))

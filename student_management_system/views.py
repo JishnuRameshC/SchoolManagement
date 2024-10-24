@@ -10,6 +10,19 @@ class RoleRequiredMixin(UserPassesTestMixin):
         return self.request.user.role == self.role_required
 
 # Admin Views
+class AdminDashboardView(RoleRequiredMixin, ListView):
+    model = Student
+    template_name = 'dashboard.html'
+    role_required = 'admin'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['total_student'] = Student.objects.count()
+        context['total_library'] = LibraryRecord.objects.count()
+        context['total_fees'] = FeesRecord.objects.count()
+        return context
+    
+    
 class StudentCreateView(CreateView):
     model = Student
     form_class = StudentForm
@@ -42,7 +55,7 @@ class StudentDeleteView(DeleteView):
 class LibaryCreateView(CreateView):
     model = LibraryRecord
     form_class = LibraryForm
-    template_name = 'libary_form.html'
+    template_name = 'library_form.html'
     success_url = reverse_lazy('library-list')
 
     def form_valid(self, form):

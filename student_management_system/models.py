@@ -54,7 +54,7 @@ class LibraryRecord(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.student.registration_number} - {self.book_title}"
+        return f"{self.student.full_name} (Grade {self.student.grade}, Section {self.student.section}) - {self.book_title}"
 
     class Meta:
         ordering = ['-created_at']

@@ -1,7 +1,9 @@
 from django.urls import path
 from .views import StudentListView, StudentCreateView,StudentUpdateView,StudentDeleteView, LibraryListView, LibaryCreateView,LibaryUpdateView,LibraryDeleteView
-from .views import FeesListView, FeesCreateView,FeesUpdateView,FeesDeleteView
+from .views import FeesListView, FeesCreateView,FeesUpdateView,FeesDeleteView,AdminDashboardView
 urlpatterns = [
+
+    path('dashboard/', AdminDashboardView.as_view(), name='dashboard'),
     path('', StudentListView.as_view(), name='student-list'),
     path('create/', StudentCreateView.as_view(), name='student-create'),
     path('update/<int:pk>/', StudentUpdateView.as_view(), name='student-update'),
