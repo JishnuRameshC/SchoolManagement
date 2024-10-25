@@ -1,0 +1,47 @@
+{% extends "shared/base.html" %}
+
+{% block content %}
+<div class="container">
+    <h2>{% if is_update %}Edit{% else %}Add{% endif %} Class Section</h2>
+
+    <form method="POST" action="">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">
+            {% if is_update %}Update{% else %}Add{% endif %} Class Section
+        </button>
+    </form>
+
+    <h3>Existing Class Sections</h3>
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th>Class</th>
+                <th>Section</th>
+                <th>Action</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for section in grade_sections %}
+            <tr>
+                <td>{{ section.grade }}</td>
+                <td>{{ section.section }}</td>
+
+                <td>
+                    <form method="POST" action="{% url 'grade-section-delete' section.pk %}" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger "> <i class="bi bi-trash3"></i>Delete</button>
+                    </form>
+                    <a href="{% url 'grade-section-update' section.pk %}" class="btn btn-primary">Edit</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3" class="text-center">No Record</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

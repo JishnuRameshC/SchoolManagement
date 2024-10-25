@@ -1,87 +1,77 @@
 {% extends "shared/base.html" %}
 {% block content %}
-<main class="content px-3 py-4">
-    <div class="container-fluid">
-      <div class="mb-3">
-        <h3 class="fw-bold fs-4 mb-3">Admin Dashboard</h3>
-        
-        {% if user.role  %}
-    `       <h1>{{user.role}}</h1>
-        {% endif %}
-          
-        <div class="row">
-          <div class="col-12 col-md-4">
-            <div class="card border-0">
-              <div class="card-body py-4">
-                <h5 class="mb-2 fw-bold">Memebers Progress</h5>
-                <p class="mb-2 fw-bold">$72,540</p>
-                <div class="mb-0">
-                  <span class="badge text-success me-2">+9.0%</span>
-                  <span class="fw-bold">Since Last Month</span>
+
+    <div class="container mt-5">
+        <h2 class="text-center">Admin Dashboard</h2>
+
+        <!-- Displaying statistics -->
+        <div class="row text-center mb-4">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5>Total Students</h5>
+                        <p>{{ total_student }}</p>
+                    </div>
                 </div>
-              </div>
             </div>
-          </div>
-          <div class="col-12 col-md-4">
-            <div class="card border-0">
-              <div class="card-body py-4">
-                <h5 class="mb-2 fw-bold">Memebers Progress</h5>
-                <p class="mb-2 fw-bold">$72,540</p>
-                <div class="mb-0">
-                  <span class="badge text-success me-2">+9.0%</span>
-                  <span class="fw-bold">Since Last Month</span>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5>Total Library Records</h5>
+                        <p>{{ total_library }}</p>
+                    </div>
                 </div>
-              </div>
             </div>
-          </div>
-          <div class="col-12 col-md-4">
-            <div class="card border-0">
-              <div class="card-body py-4">
-                <h5 class="mb-2 fw-bold">Memebers Progress</h5>
-                <p class="mb-2 fw-bold">$72,540</p>
-                <div class="mb-0">
-                  <span class="badge text-success me-2">+9.0%</span>
-                  <span class="fw-bold">Since Last Month</span>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5>Total Fees Records</h5>
+                        <p>{{ total_fees }}</p>
+                    </div>
                 </div>
-              </div>
             </div>
-          </div>
         </div>
-        <h3 class="fw-bold fs-4 my-3">Avg. Agent Earnings</h3>
-        <div class="row">
-          <div class="col-12">
-            <table class="table table-striped">
-              <thead>
-                <tr class="highlight">
-                  <th scope="col">#</th>
-                  <th scope="col">First</th>
-                  <th scope="col">Last</th>
-                  <th scope="col">Handle</th>
-                </tr>
-              </thead>
-              <tbody>
+
+        <!-- User Table -->
+        <h3 class="text-center mb-3">All Users</h3>
+        <a class="btn btn-primary" href="{% url 'register' %}">Add Staff/Libaran</a>
+        <table class="table table-bordered table-striped">
+            <thead class="thead-dark">
                 <tr>
-                  <th scope="row">1</th>
-                  <td>Mark</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
+                    <th>Username</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Action</th>
                 </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
                 <tr>
-                  <th scope="row">2</th>
-                  <td>Jacob</td>
-                  <td>Thornton</td>
-                  <td>@fat</td>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.first_name }}</td>
+                    <td>{{ user.last_name }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.get_role_display }}</td>
+                    <td>
+                        <a class="btn btn-primary" href="{% url 'user-update' user.pk %}">
+                            <i class="bi bi-pen"></i> Edit
+                        </a>
+                        <a class="btn btn-danger" href="{% url 'user-delete' user.pk %}">
+                            <i class="bi bi-trash3"></i> Delete
+                        </a>
+                    </td>
                 </tr>
+                {% empty %}
                 <tr>
-                  <th scope="row">3</th>
-                  <td colspan="2">Larry the Bird</td>
-                  <td>@twitter</td>
+                    <td colspan="5" class="text-center">No users found</td>
                 </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
+                {% endfor %}
+                {% comment %} <tr>
+                  <td colspan="6" class="text-center"><a class="btn btn-secondary" href="" style="width: 100%;">Create </a></td>
+              </tr> {% endcomment %}
+            </tbody>
+        </table>
     </div>
-  </main>
 {% endblock %}

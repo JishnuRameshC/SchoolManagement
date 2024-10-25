@@ -6,7 +6,6 @@
   <a class="btn btn-primary" href="{% url 'fees-create' %}">Create New Fees record</a>
   <div class="row">
     <div class="col-12">
-    
       <table class="table table-striped">
         <thead>
           <tr class="highlight">
@@ -19,9 +18,7 @@
             <th scope="col">Created by</th>
             <th scope="col">Created at</th>
             <th scope="col">Updated at</th>
-            <th scope="col"> </th>
-
-
+            <th scope="col">Actions</th>
           </tr>
         </thead>
         {% for fees in object_list %}
@@ -39,7 +36,7 @@
 
             <td><a href="{% url 'fees-delete' fees.pk %}" class="btn btn-danger">Delete</a> <a href="{% url 'fees-update' fees.pk %}" class="btn btn-primary">Edit</a></td>
           </tr>
-        {% endfor %}          
+        {% endfor %} 
         </tbody>
       </table>
     </div>

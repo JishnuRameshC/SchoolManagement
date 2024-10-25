@@ -1,8 +1,10 @@
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import UserPassesTestMixin,LoginRequiredMixin
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
-from .models import Student,LibraryRecord,FeesRecord
-from .forms import StudentForm,LibraryForm,FeesForm
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView, View
+from django.shortcuts import render, redirect,get_object_or_404
+from .models import Student,LibraryRecord,FeesRecord,GradeSection
+from .forms import StudentForm,LibraryForm,FeesForm, GradeSectionForm
+from accounts.models import CustomUser
 
 class RoleRequiredMixin(UserPassesTestMixin):
     allowed_roles = []
@@ -23,9 +25,79 @@ class AdminDashboardView(LoginRequiredMixin, RoleRequiredMixin, ListView):
         context['total_student'] = Student.objects.count()
         context['total_library'] = LibraryRecord.objects.count()
         context['total_fees'] = FeesRecord.objects.count()
+        context['users'] = CustomUser.objects.all()
         return context
+
+# grade section
+class GradeSectionView(LoginRequiredMixin, View):
+    template_name = 'student/grade_section.html'
+
+    def get(self, request, *args, **kwargs):
+        form = GradeSectionForm()
+        grade_sections = GradeSection.objects.all()
+        context = {
+            'form': form,
+            'grade_sections': grade_sections,
+            'is_update': False,  # Indicates that we are in create mode
+        }
+        return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+        form = GradeSectionForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect(request.path)
+        grade_sections = GradeSection.objects.all()
+        context = {
+            'form': form,
+            'grade_sections': grade_sections,
+            'is_update': False,
+        }
+        return render(request, self.template_name, context)
+
+class GradeSectionUpdateView(LoginRequiredMixin, RoleRequiredMixin, View):
+    model = GradeSection
+    form_class = GradeSectionForm
+    template_name = 'student/grade_section.html'
+    success_url = reverse_lazy('grade-section')
+    allowed_roles = ['admin', 'staff']
+
+    def get(self, request, pk, *args, **kwargs):
+        section = get_object_or_404(GradeSection, pk=pk)
+        form = self.form_class(instance=section)
+        grade_sections = GradeSection.objects.all()
+        context = {
+            'form': form,
+            'grade_sections': grade_sections,
+            'is_update': True,
+        }
+        return render(request, self.template_name, context)
+
+    def post(self, request, pk, *args, **kwargs):
+        section = get_object_or_404(GradeSection, pk=pk)
+        form = self.form_class(request.POST, instance=section)
+        if form.is_valid():
+            form.save()
+            return redirect(self.success_url)
+        grade_sections = GradeSection.objects.all()
+        context = {
+            'form': form,
+            'grade_sections': grade_sections,
+            'is_update': True,
+        }
+        return render(request, self.template_name, context)
     
-    
+
+class GradeSectionDeleteView(LoginRequiredMixin, RoleRequiredMixin, View):
+    model = GradeSection
+    success_url = reverse_lazy('grade-section')
+    allowed_roles = ['admin', 'staff']
+
+    def post(self, request, pk, *args, **kwargs):
+        section = get_object_or_404(GradeSection, pk=pk)
+        section.delete()
+        return redirect(self.success_url)
+
 class StudentCreateView(LoginRequiredMixin, RoleRequiredMixin, CreateView):
     model = Student
     form_class = StudentForm

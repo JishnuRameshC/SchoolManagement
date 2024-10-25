@@ -8,6 +8,16 @@ from accounts.models import CustomUser
 from django.conf import settings
 
 # Create your models here.
+class GradeSection(models.Model):
+    grade = models.CharField(max_length=10)
+    section = models.CharField(max_length=10)
+
+    class Meta:
+        unique_together = ('grade', 'section')
+
+    def __str__(self):
+        return f"{self.grade} - {self.section}"
+
 class Student(models.Model):
     GENDER_CHOICES = (
         ('M', 'Male'),
@@ -19,8 +29,7 @@ class Student(models.Model):
     full_name = models.CharField(max_length=200, blank=True)
     student_number = models.AutoField(primary_key=True)
     dob = models.DateField(verbose_name='Date of Birth')
-    grade = models.CharField(max_length=10)
-    section = models.CharField(max_length=5)
+    grade_section = models.ForeignKey(GradeSection,null=True, on_delete=models.SET_NULL)
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
     address = models.TextField()
     parent_name = models.CharField(max_length=100)
@@ -36,10 +45,7 @@ class Student(models.Model):
         return f"{self.registration_number} - {self.first_name} {self.last_name}"
     
     class Meta:
-        ordering = ['grade', 'section', 'first_name']
-
-    def get_absolute_url(self):
-        return reverse('student_detail', kwargs={'pk': self.pk})
+        ordering = ['grade_section', 'first_name', 'last_name']
 
 class LibraryRecord(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='library_records')

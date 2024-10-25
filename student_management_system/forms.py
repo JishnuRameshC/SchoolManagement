@@ -1,9 +1,29 @@
 from datetime import date
 from django import forms
-from .models import Student,LibraryRecord,FeesRecord
+from .models import Student,LibraryRecord,FeesRecord,GradeSection
 from django.core.validators import EmailValidator
 from django.forms import CharField, TextInput, DateField, ChoiceField, DateInput
 from django.core.exceptions import ValidationError
+
+class GradeSectionForm(forms.ModelForm):
+    grade = forms.CharField(
+        max_length=10,
+        widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Grade'}),
+        required=True,
+        label="Grade",
+        help_text="eg: 1st, 2nd, 3rd, 4th, 5th .."
+    )
+    section = forms.CharField(
+        max_length=10,
+        widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Section'}),
+        required=True,
+        label="Section",
+        help_text="eg: A, B, C, D, E .."
+    )
+    class Meta:
+        model = GradeSection
+        fields = ['grade', 'section']
+
 
 class StudentForm(forms.ModelForm):
     first_name = CharField(
@@ -18,12 +38,10 @@ class StudentForm(forms.ModelForm):
         required=True,
         widget=TextInput(attrs={"class": "form-control"}),
     )
-    email = CharField(
-        min_length=5,
-        max_length=50,
-        label="Email",
+    registration_number = CharField(
+        label="Registration Number",
+        max_length=10,
         required=True,
-        validators=[EmailValidator()],
         widget=TextInput(attrs={"class": "form-control"}),
     )
     phone_number = CharField(
@@ -43,12 +61,6 @@ class StudentForm(forms.ModelForm):
         required=True,
         widget=TextInput(attrs={"class": "form-control"}),
     )
-    grade = ChoiceField(
-        label="Grade",
-        choices=[('10th', '10th'), ('11th', '11th'), ('12th', '12th'), ('graduated', 'Graduated'), ('other', 'Other')],
-        required=True,
-        widget=forms.Select(attrs={"class": "form-control"}),
-    )
     gender = ChoiceField(
         label="Gender",
         choices=[
@@ -62,7 +74,7 @@ class StudentForm(forms.ModelForm):
 
     class Meta:
         model = Student
-        fields = ['first_name', 'last_name', 'email', 'phone_number', 'dob', 'address', 'grade', 'gender']
+        fields = ['first_name', 'last_name', 'phone_number', 'dob', 'address', 'gender']
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
