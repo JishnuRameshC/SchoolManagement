@@ -1,0 +1,48 @@
+{% extends 'account/accounts_base.html' %}
+{% load static %}
+{% block style %}
+<style>
+    .form_center{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+    .btn-login {
+        font-size: 0.9rem;
+        letter-spacing: 0.05rem;
+        padding: 0.75rem 1rem;
+      }
+      
+</style> 
+{% endblock style %}
+
+{% block content %}
+
+<div class="form_center">
+    <form class="p-5 p-md-5 border rounded-3 bg-body-tertiary" method="post">
+        <h5 class="text-center mb-3 fw-light fs-5">Sign In</h5>
+        <p class="fw-light mb-3">Please enter your username and password!</p>
+        <div class="col  mb-3">
+            {{ form.username.label }}
+            {{ form.username }}
+            {% if form.username.errors %}
+                {{ form.username.errors }}
+            {% endif %}
+        </div>
+
+        <div class="col mb-5">
+            {{ form.password.label }}
+            {{ form.password }}
+            {% if form.password.errors %}
+                {{ form.password.errors }}
+            {% endif %}
+        </div>
+        <div class="col mb-3">
+            {% csrf_token %}
+            <button class="w-100 btn btn-lg btn-primary" type="submit">Login</button>
+        </div>
+        
+    </form>
+</div>
+{% endblock %}

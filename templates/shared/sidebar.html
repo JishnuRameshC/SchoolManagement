@@ -50,9 +50,12 @@
           
           {% if user.is_authenticated %}
               {% if user.role == 'admin' %}
-                  <li class="sidebar-item">
-                      <a href="#" class="sidebar-link">Add Staff</a>
-                  </li>
+              <li class="sidebar-item">
+                <a href="{% url 'grade-section' %}" class="sidebar-link">Add Section</a>
+              </li>
+              <li class="sidebar-item">
+                  <a href="{% url 'register' %}" class="sidebar-link">Add Staff</a>
+              </li>
               {% endif %}
           {% endif %}
         </ul>
@@ -62,7 +65,7 @@
       <li class="sidebar-item">
         <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse" data-bs-target="#auth" aria-expanded="false" aria-controls="auth">
           <i class="bi bi-currency-rupee"></i>
-          <span>Auth</span>
+          <span>Fees</span>
         </a>
         <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
           <li class="sidebar-item">

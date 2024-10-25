@@ -16,8 +16,12 @@
         {% endif %}
       </a>
       <ul class="dropdown-menu text-small shadow">
-        <li><a class="dropdown-item" href="#">Change password</a></li>
-        <li><a class="dropdown-item" href="#">Sign out</a></li>
+        <li>
+          <a class="dropdown-item" href="{% url 'change-password' user.pk %}">Change password</a>
+        </li>
+        <li>
+          <a class="dropdown-item" href="{% url 'logout' %}">Sign out</a>
+        </li>
       </ul>
     </div>
   </div>
