@@ -112,6 +112,11 @@ class StudentCreateView(LoginRequiredMixin, RoleRequiredMixin, CreateView):
     def form_invalid(self, form):
         print("Form is invalid!", form.errors)
         return super().form_invalid(form)
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['is_update'] = False
+        return context
 
 class StudentListView(LoginRequiredMixin, ListView):
     model = Student
@@ -123,6 +128,11 @@ class StudentUpdateView(LoginRequiredMixin, RoleRequiredMixin, UpdateView):
     template_name = 'student/student_form.html'
     success_url = reverse_lazy('student-list')
     allowed_roles = ['admin', 'staff']
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['is_update'] = True
+        return context
 
 class StudentDeleteView(LoginRequiredMixin, RoleRequiredMixin, DeleteView):
     model = Student

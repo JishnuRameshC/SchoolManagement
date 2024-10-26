@@ -2,7 +2,7 @@ from datetime import date
 from django import forms
 from .models import Student,LibraryRecord,FeesRecord,GradeSection
 from django.core.validators import EmailValidator
-from django.forms import CharField, TextInput, DateField, ChoiceField, DateInput
+from django.forms import CharField, TextInput, DateField, ChoiceField, DateInput,ModelChoiceField
 from django.core.exceptions import ValidationError
 
 class GradeSectionForm(forms.ModelForm):
@@ -28,26 +28,20 @@ class GradeSectionForm(forms.ModelForm):
 class StudentForm(forms.ModelForm):
     first_name = CharField(
         label="First Name",
-        max_length=30,
+        max_length=100,
         required=True,
         widget=TextInput(attrs={"class": "form-control"}),
     )
     last_name = CharField(
         label="Last Name",
-        max_length=30,
+        max_length=100,
         required=True,
         widget=TextInput(attrs={"class": "form-control"}),
     )
     registration_number = CharField(
         label="Registration Number",
-        max_length=10,
-        required=True,
-        widget=TextInput(attrs={"class": "form-control"}),
-    )
-    phone_number = CharField(
-        label="Phone Number",
-        max_length=15,
-        required=True,
+        max_length=20,
+        required=False,
         widget=TextInput(attrs={"class": "form-control"}),
     )
     dob = DateField(
@@ -55,61 +49,73 @@ class StudentForm(forms.ModelForm):
         required=True,
         widget=DateInput(attrs={"type": "date", "class": "form-control"}),
     )
-    address = CharField(
+    grade_section = ModelChoiceField(
+        label="Grade & Section",
+        queryset=GradeSection.objects.all(),
+        required=True,
+        widget=forms.Select(attrs={"class": "form-control"}),
+    )
+    gender = ChoiceField(
+        label="Gender",
+        choices=Student.GENDER_CHOICES,
+        required=True,
+        widget=forms.Select(attrs={"class": "form-control"}),
+    )
+    address = forms.CharField(
         label="Address",
+        widget=forms.Textarea(attrs={"class": "form-control", "rows": 3}),
+        required=True
+    )
+    parent_name = CharField(
+        label="Parent Name",
         max_length=100,
         required=True,
         widget=TextInput(attrs={"class": "form-control"}),
     )
-    gender = ChoiceField(
-        label="Gender",
-        choices=[
-            ('M', 'Male'),
-            ('F', 'Female')
-        ],
+    parent_phone = CharField(
+        label="Parent Phone",
+        max_length=15,
         required=True,
-        widget=forms.Select(attrs={"class": "form-control"}),
+        widget=TextInput(attrs={"class": "form-control"}),
     )
-
 
     class Meta:
         model = Student
-        fields = ['first_name', 'last_name', 'phone_number', 'dob', 'address', 'gender']
+        fields = [
+            'first_name',
+            'last_name',
+            'registration_number',
+            'dob',
+            'grade_section',
+            'gender',
+            'address',
+            'parent_name',
+            'parent_phone'
+        ]
 
-    def clean_email(self):
-        email = self.cleaned_data.get('email')
-        if email:
-            # Get the current instance (if any) being updated
+    def clean_registration_number(self):
+        registration_number = self.cleaned_data.get('registration_number')
+        if registration_number:
             current_instance = getattr(self, 'instance', None)
-            if current_instance and Student.objects.filter(email=email).exclude(pk=current_instance.pk).exists():
-                raise ValidationError("A user with this email already exists.")
-        return email
+            if current_instance and Student.objects.filter(
+                registration_number=registration_number
+            ).exclude(pk=current_instance.student_number).exists():
+                raise ValidationError("This registration number already exists.")
+        return registration_number
 
-    def clean_phone_number(self):
-        phone_number = self.cleaned_data.get('phone_number')
-        if phone_number:
-            # Get the current instance (if any) being updated
-            current_instance = getattr(self, 'instance', None)
-            if current_instance and Student.objects.filter(phone_number=phone_number).exclude(pk=current_instance.pk).exists():
-                raise ValidationError("A user with this phone number already exists.")
-        return phone_number
+    def clean_parent_phone(self):
+        phone = self.cleaned_data.get('parent_phone')
+        if not phone.isdigit():
+            raise ValidationError("Phone number should contain only digits.")
+        if len(phone) < 10:
+            raise ValidationError("Phone number should be at least 10 digits.")
+        return phone
 
     def clean_dob(self):
         dob = self.cleaned_data.get('dob')
-
         if dob and dob >= date.today():
             raise ValidationError("Date of Birth must be in the past.")
-        return dob
-
-    def clean(self):
-        cleaned_data = super().clean()
-        first_name = cleaned_data.get('first_name')
-        last_name = cleaned_data.get('last_name')
-
-        # Check if both first name and last name are provided
-        if not first_name or not last_name:
-            raise ValidationError("Both first name and last name are required.")
-        
+        return dob       
 
 class LibraryForm(forms.ModelForm):
     class Meta:

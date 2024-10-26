@@ -3,7 +3,6 @@ from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator
 from decimal import Decimal
 
-from django.urls import reverse
 from accounts.models import CustomUser
 from django.conf import settings
 
@@ -23,10 +22,11 @@ class Student(models.Model):
         ('M', 'Male'),
         ('F', 'Female'),
     )
-    registration_number = models.CharField(max_length=20, unique=True)
+    
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     full_name = models.CharField(max_length=200, blank=True)
+    registration_number = models.CharField(max_length=20, unique=True,null=True)
     student_number = models.AutoField(primary_key=True)
     dob = models.DateField(verbose_name='Date of Birth')
     grade_section = models.ForeignKey(GradeSection,null=True, on_delete=models.SET_NULL)
