@@ -8,12 +8,11 @@
 
     <div class="flex-shrink-0 dropdown navbar_userprofile">
       <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-        {% comment %} <img src="{% static 'images/avathar.png' %}" alt="profile_avtar" width="32" height="32" class="rounded-circle" > {% endcomment %}
+        
         {% if user.is_authenticated %}
-          {% if user.role == 'admin' %}
             {{ user.username }} ({{ user.role }})
-          {% endif %}
         {% endif %}
+        <img src="{% static 'image\avathar.png' %}" alt="profile_avtar" width="32" height="32" class="rounded-circle" >
       </a>
       <ul class="dropdown-menu text-small shadow">
         <li>

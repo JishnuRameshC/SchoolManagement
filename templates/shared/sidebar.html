@@ -3,20 +3,16 @@
     <div class="d-flex">
       <button class="toggle-btn" type="button"><i class="lni lni-grid-alt"></i></button>
       <div class="sidebar-logo">
-        <a href="#">Student M S</a>
+        <a href="#">School M S</a>
       </div>
     </div>
     <ul class="sidebar-nav">
-      {% if user.is_authenticated %}
-        {% if user.role == 'admin' %}
           <li class="sidebar-item">
             <a href="{% url 'dashboard' %}" class="sidebar-link">
               <i class="bi bi-house"></i>
               <span>Dashbord</span>
             </a>
           </li>
-        {% endif %}
-      {% endif %}
       <li class="sidebar-item">
         <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse" data-bs-target="#auth" aria-expanded="false" aria-controls="auth">
           <i class="bi bi-book"></i>
@@ -24,7 +20,7 @@
         </a>
         <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
           <li class="sidebar-item">
-            <a href="{% url 'library-list' %}" class="sidebar-link">Library List</a>
+            <a href="{% url 'library-list' %}" class="sidebar-link">Book List</a>
           </li>
           
           {% if user.is_authenticated %}
@@ -32,6 +28,12 @@
                   <li class="sidebar-item">
                       <a href="{% url 'library-create' %}" class="sidebar-link">Add Book</a>
                   </li>
+                  <li class="sidebar-item">
+                    <a href="{% url 'libraryrecord-list' %}" class="sidebar-link">libaran Record</a>
+                </li>
+                  <li class="sidebar-item">
+                    <a href="{% url 'libraryrecord-create' %}" class="sidebar-link">Add libaran Record</a>
+                </li>
               {% endif %}
           {% endif %}
         </ul>
@@ -41,7 +43,7 @@
       <li class="sidebar-item">
         <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse" data-bs-target="#auth" aria-expanded="false" aria-controls="auth">
           <i class="bi bi-person-add"></i>
-          <span>Auth</span>
+          <span>ADD</span>
         </a>
         <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
           <li class="sidebar-item">
@@ -82,16 +84,4 @@
         </ul>
       </li>
     </ul>
-    {% if user.is_authenticated %}
-    <form action="{% url 'logout' %}">
-      {% csrf_token %}
-      <div class="sidebar-footer">
-        <button type="submit" class="sidebar-link">
-          <i class="lni lni-exit"></i>
-          <span>Logout</span>
-        </button>
-      </div>
-    </form>
-    
-    {% endif %}
   </aside>

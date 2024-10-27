@@ -1,6 +1,6 @@
 from datetime import date
 from django import forms
-from .models import Student,LibraryRecord,FeesRecord,GradeSection
+from .models import Student,FeesRecord,GradeSection
 from django.core.validators import EmailValidator
 from django.forms import CharField, TextInput, DateField, ChoiceField, DateInput,ModelChoiceField
 from django.core.exceptions import ValidationError
@@ -117,17 +117,6 @@ class StudentForm(forms.ModelForm):
             raise ValidationError("Date of Birth must be in the past.")
         return dob       
 
-class LibraryForm(forms.ModelForm):
-    class Meta:
-        model = LibraryRecord
-        fields = ['student', 'book_title', 'book_id', 'borrowed_date', 'due_date', 'remarks']
-
-    student = forms.ModelChoiceField(queryset=Student.objects.all(), widget=forms.Select(attrs={'class': 'form-control'}))
-    book_title = forms.CharField(max_length=200, widget=forms.TextInput(attrs={'class': 'form-control'}))
-    book_id = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'class': 'form-control'}))
-    borrowed_date = forms.DateField(widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}))
-    due_date = forms.DateField(widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}))
-    remarks = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control'}))
 
 
 class FeesForm(forms.ModelForm):

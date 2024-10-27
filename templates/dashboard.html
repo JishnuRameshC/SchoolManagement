@@ -2,7 +2,6 @@
 {% block content %}
 
     <div class="container mt-5">
-        <h2 class="text-center">Admin Dashboard</h2>
 
         <!-- Displaying statistics -->
         <div class="row text-center mb-4">
@@ -11,30 +10,41 @@
                     <div class="card-body">
                         <h5>Total Students</h5>
                         <p>{{ total_student }}</p>
+                        <a href="{% url 'student-list' %}">view </a>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h5>Total Library Records</h5>
-                        <p>{{ total_library }}</p>
+            {% if user.is_authenticated %}
+                {% if user.role == 'admin' or user.role == 'libaran' %}
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5>Total Library Records</h5>
+                                <p>{{ total_library }}</p>
+                                <a href="{% url 'library-list' %}">view </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endif %} 
+            {% if user.is_authenticated %}
+                {% if user.role == 'admin' or user.role == 'staff' %}
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5>Total Fees Records</h5>
+                            <p>{{ total_fees }}</p>
+                            <a href="{% url 'fees-list' %}">view </a>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h5>Total Fees Records</h5>
-                        <p>{{ total_fees }}</p>
-                    </div>
-                </div>
-            </div>
+                {% endif %}
+            {% endif %}  
         </div>
 
         <!-- User Table -->
         <h3 class="text-center mb-3">All Users</h3>
-        <a class="btn btn-primary" href="{% url 'register' %}">Add Staff/Libaran</a>
+        {% if user.role == 'admin' %}<a class="btn btn-primary" href="{% url 'register' %}">Add Staff/Libaran</a>{% endif %}
         <table class="table table-bordered table-striped">
             <thead class="thead-dark">
                 <tr>
@@ -43,17 +53,18 @@
                     <th>Last Name</th>
                     <th>Email</th>
                     <th>Role</th>
-                    <th>Action</th>
+                    {% if user.role == 'admin' %}<th>Action</th> {% endif %}
                 </tr>
             </thead>
             <tbody>
-                {% for user in users %}
+                {% for u in users %}
                 <tr>
-                    <td>{{ user.username }}</td>
-                    <td>{{ user.first_name }}</td>
-                    <td>{{ user.last_name }}</td>
-                    <td>{{ user.email }}</td>
-                    <td>{{ user.get_role_display }}</td>
+                    <td>{{ u.username }}</td>
+                    <td>{{ u.first_name }}</td>
+                    <td>{{ u.last_name }}</td>
+                    <td>{{ u.email }}</td>
+                    <td>{{ u.get_role_display }}</td>
+                    {% if user.role == 'admin' %}
                     <td>
                         <a class="btn btn-primary" href="{% url 'user-update' user.pk %}">
                             <i class="bi bi-pen"></i> Edit
@@ -62,6 +73,7 @@
                             <i class="bi bi-trash3"></i> Delete
                         </a>
                     </td>
+                    {% endif %}
                 </tr>
                 {% empty %}
                 <tr>

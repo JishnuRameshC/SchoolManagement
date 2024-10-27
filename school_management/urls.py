@@ -1,25 +1,21 @@
 from django.urls import path
-from .views import StudentListView, StudentCreateView,StudentUpdateView,StudentDeleteView, LibraryListView, LibaryCreateView,LibaryUpdateView,LibraryDeleteView
-from .views import FeesListView, FeesCreateView,FeesUpdateView,FeesDeleteView,AdminDashboardView,GradeSectionView
+from .views import StudentListView, StudentCreateView,StudentUpdateView,StudentDeleteView
+from .views import FeesListView, FeesCreateView,FeesUpdateView,FeesDeleteView,DashboardView,GradeSectionView
 from .views import GradeSectionUpdateView,GradeSectionDeleteView
 
 urlpatterns = [
 
-    path('dashboard/', AdminDashboardView.as_view(), name='dashboard'),
+    path('dashboard/', DashboardView.as_view(), name='dashboard'),
 
     path('grade-section/', GradeSectionView.as_view(), name='grade-section'),
     path('grade-section/update/<int:pk>/', GradeSectionUpdateView.as_view(), name='grade-section-update'),
     path('grade-section/delete/<int:pk>/', GradeSectionDeleteView.as_view(), name='grade-section-delete'),
 
-    path('', StudentListView.as_view(), name='student-list'),
-    path('create/', StudentCreateView.as_view(), name='student-create'),
-    path('update/<int:pk>/', StudentUpdateView.as_view(), name='student-update'),
-    path('delete/<int:pk>/', StudentDeleteView.as_view(), name='student-delete'),
+    path('student/', StudentListView.as_view(), name='student-list'),
+    path('student/create/', StudentCreateView.as_view(), name='student-create'),
+    path('student/update/<int:pk>/', StudentUpdateView.as_view(), name='student-update'),
+    path('student/delete/<int:pk>/', StudentDeleteView.as_view(), name='student-delete'),
     
-    path('library/', LibraryListView.as_view(), name='library-list'),
-    path('library/create/', LibaryCreateView.as_view(), name='library-create'),
-    path('library/update/<int:pk>/', LibaryUpdateView.as_view(), name='library-update'),
-    path('library/delete/<int:pk>/', LibraryDeleteView.as_view(), name='library-delete'),
 
     path('fees/', FeesListView.as_view(), name='fees-list'),
     path('fees/create/', FeesCreateView.as_view(), name='fees-create'),

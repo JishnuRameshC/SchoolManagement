@@ -1,0 +1,41 @@
+{% extends 'shared/base.html' %}
+{% block content %}
+  <h2 class="fw-bold fs-4 my-3">Add BooK</h2>
+  <form class="p-5 p-md-5 border rounded-3 bg-body-tertiary" method="POST">
+    {% csrf_token %}
+    <div class="col">
+      {{ form.student.label }}
+      {{ form.student }}
+      {{ form.student.errors }} 
+    </div>
+    <div class="col">
+      {{ form.book.label }}
+      {{ form.book }}
+      {{ form.book.errors }} 
+    </div>
+    <div class="col mb-4">
+      {{ form.due_date.label }}
+      {{ form.due_date }}
+      {{ form.due_date.errors }} 
+    </div>
+    <div class="col mb-4">
+        {{ form.returned_date.label }}
+        {{ form.returned_date }}
+        {{ form.returned_date.errors }} 
+    </div>
+    <div class="col mb-4">
+        {{ form.remarks.label }}
+        {{ form.remarks }}
+        {{ form.remarks.errors }} 
+    </div>
+    <div class="col mb-4">
+        {{ form.status.label }}
+        {{ form.status }}
+        {{ form.status.errors }} 
+    </div>
+    <button class="w-100 btn btn-lg btn-primary" type="submit">Save</button>
+</form>
+
+
+
+{% endblock content %}

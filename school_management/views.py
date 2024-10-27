@@ -2,8 +2,8 @@ from django.urls import reverse_lazy
 from django.contrib.auth.mixins import UserPassesTestMixin,LoginRequiredMixin
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView, View
 from django.shortcuts import render, redirect,get_object_or_404
-from .models import Student,LibraryRecord,FeesRecord,GradeSection
-from .forms import StudentForm,LibraryForm,FeesForm, GradeSectionForm
+from .models import Student,FeesRecord,GradeSection
+from .forms import StudentForm,FeesForm, GradeSectionForm
 from accounts.models import CustomUser
 
 class RoleRequiredMixin(UserPassesTestMixin):
@@ -14,16 +14,14 @@ class RoleRequiredMixin(UserPassesTestMixin):
 
 
 # Admin Views
-class AdminDashboardView(LoginRequiredMixin, RoleRequiredMixin, ListView):
+class DashboardView(LoginRequiredMixin, ListView):
     model = Student
     template_name = 'dashboard.html'
-    role_required = 'staff'
-    allowed_roles = ['admin']
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['total_student'] = Student.objects.count()
-        context['total_library'] = LibraryRecord.objects.count()
+        # context['total_library'] = LibraryRecord.objects.count()
         context['total_fees'] = FeesRecord.objects.count()
         context['users'] = CustomUser.objects.all()
         return context
@@ -138,39 +136,6 @@ class StudentDeleteView(LoginRequiredMixin, RoleRequiredMixin, DeleteView):
     model = Student
     template_name = 'student/student_confirm_delete.html'
     success_url = reverse_lazy('student-list')
-    allowed_roles = ['admin', 'staff']
-
-class LibaryCreateView(LoginRequiredMixin, RoleRequiredMixin, CreateView):
-    model = LibraryRecord
-    form_class = LibraryForm
-    template_name = 'librarys/library_form.html'
-    success_url = reverse_lazy('library-list')
-    allowed_roles = ['admin', 'staff']
-
-    def form_valid(self, form):
-        print("Form is valid!")
-        return super().form_valid(form)
-
-    def form_invalid(self, form):
-        print("Form is invalid!", form.errors)
-        return super().form_invalid(form)
-    
-class LibraryListView(LoginRequiredMixin, ListView):
-    model = LibraryRecord
-    template_name = 'librarys/library_list.html'
-
-
-class LibaryUpdateView(LoginRequiredMixin, RoleRequiredMixin,UpdateView):
-    model = LibraryRecord
-    form_class = LibraryForm
-    template_name = 'librarys/library_form.html'
-    success_url = reverse_lazy('library-list')
-    allowed_roles = ['admin', 'staff']
-
-class LibraryDeleteView(LoginRequiredMixin, RoleRequiredMixin,DeleteView):
-    model = LibraryRecord
-    template_name = 'librarys/library_confirm_delete.html'
-    success_url = reverse_lazy('library-list')
     allowed_roles = ['admin', 'staff']
 
 

@@ -1,13 +1,8 @@
 {% extends 'shared/base.html' %}
 {% block content %}
-  <h2 class="fw-bold fs-4 my-3">Create Student / Update Student</h2>
-  <form method="POST">
+  <h2 class="fw-bold fs-4 my-3">Add BooK</h2>
+  <form class="p-5 p-md-5 border rounded-3 bg-body-tertiary" method="POST">
     {% csrf_token %}
-    <div class="col">
-      {{ form.student.label }}
-      {{ form.student }}
-      {{ form.student.errors }} 
-    </div>
     <div class="col">
       {{ form.book_title.label }}
       {{ form.book_title }}
@@ -18,32 +13,13 @@
       {{ form.book_id }}
       {{ form.book_id.errors }} 
     </div>
-    <div class="col">
-      {{ form.borrowed_date.label }}
-      {{ form.borrowed_date }}
-      {{ form.borrowed_date.errors }} 
+    <div class="col mb-4">
+      {{ form.quantity.label }}
+      {{ form.quantity }}
+      {{ form.quantity.errors }} 
     </div>
-    <div class="col">
-      {{ form.due_date.label }}
-      {{ form.due_date }}
-      {{ form.due_date.errors }} 
-    </div>
-    <div class="col">
-      {{ form.returned_date.label }}
-      {{ form.returned_date }}
-      {{ form.returned_date.errors }} 
-    </div>
-    <div class="col">
-      {{ form.remarks.label }}
-      {{ form.remarks }}
-      {{ form.remarks.errors }} 
-    </div>
-    <div class="col">
-      {{ form.created_by.label }}
-      {{ form.created_by }}
-      {{ form.created_by.errors }} 
-    </div>
-    <button class="btn btn-primary" type="submit">Save</button>
+   
+    <button class="w-100 btn btn-lg btn-primary" type="submit">Save</button>
 </form>
 
 

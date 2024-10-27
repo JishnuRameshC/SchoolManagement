@@ -42,28 +42,12 @@ class Student(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"{self.registration_number} - {self.first_name} {self.last_name}"
+        return f"{self.registration_number} ,  {self.first_name} {self.last_name} , class : {self.grade_section}"
     
     class Meta:
         ordering = ['grade_section', 'first_name', 'last_name']
 
-class LibraryRecord(models.Model):
-    student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='library_records')
-    book_title = models.CharField(max_length=200)
-    book_id = models.CharField(max_length=50)
-    borrowed_date = models.DateField()
-    due_date = models.DateField()
-    returned_date = models.DateField(null=True, blank=True)
-    remarks = models.TextField(blank=True)
-    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
 
-    def __str__(self):
-        return f"{self.student.full_name} (Grade {self.student.grade}, Section {self.student.section}) - {self.book_title}"
-
-    class Meta:
-        ordering = ['-created_at']
 
 class FeesRecord(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='fees_records')

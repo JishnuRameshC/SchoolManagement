@@ -10,24 +10,29 @@
       <table class="table table-striped">
         <thead>
           <tr class="highlight">
-            <th scope="col">student_number</th>
-            <th scope="col">full_name</th>
-            <th scope="col">email</th>
-            <th scope="col">class</th>
-            <th scope="col">dob</th>
-            <th scope="col">address</th>
-            <th scope="col"></th>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Class</th>
+            <th scope="col">DOB</th>
+            <th scope="col">Gender</th>
+            <th scope="col">Address</th>
+            <th scope="col">Parents Name</th>
+            <th scope="col">Parents PhoneNo</th>
+            <th scope="col">Action</th>
           </tr>
         </thead>
         {% for student in object_list %}
         <tbody>
           <tr>
-            <td>{{ student.student_number }}</td>
+        
+            <td>{{ forloop.counter }}</td>
             <td>{{ student.full_name }}</td>
-            <td>{{ student.email }}</td>
-            <td>{{ student.grade }}</td>
+            <td>{{ student.grade_section }}</td>
             <td>{{ student.dob }}</td>
+            <td>{{ student.gender }}</td>
             <td>{{ student.address }}</td>
+            <td>{{ student.parent_name }}</td>
+            <td>{{ student.parent_phone }}</td>
             <td><a href="{% url 'student-delete' student.pk %}" class="btn btn-danger">Delete</a> <a href="{% url 'student-update' student.pk %}" class="btn btn-primary">Edit</a></td>
           </tr>
         {% endfor %}         

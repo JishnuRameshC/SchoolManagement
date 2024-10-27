@@ -1,7 +1,7 @@
 {% extends 'shared/base.html' %}
 {% block content %}
-  <h2 class="fw-bold fs-4 my-3">Create Student / Update Student</h2>
-  <form method="POST">
+  <form class="p-5 p-md-5 border rounded-3 bg-body-tertiary" method="POST">
+    <h5 class="text-center mb-3 fw-light fs-5">{% if is_update %}Update Student Information{% else %} Add New Student {% endif %}</h5>
     {% csrf_token %}
     {{ form.non_field_errors }} 
     <div class="col">
@@ -14,15 +14,11 @@
         {{ form.last_name }}
         {{ form.last_name.errors }}
     </div>
-    <div class="col">
-        {{ form.email.label }}
-        {{ form.email }}
-        {{ form.email.errors }}
-    </div>
-    <div class="col">
-        {{ form.phone_number.label }}
-        {{ form.phone_number }}
-        {{ form.phone_number.errors }}
+
+    <div class="col ">
+        {{ form.registration_number.label }}
+        {{ form.registration_number }}
+        {{ form.registration_number.errors }}
     </div>
     <div class="col">
         {{ form.dob.label }}
@@ -30,21 +26,34 @@
         {{ form.dob.errors }}
     </div>
     <div class="col">
-        {{ form.address.label }}
-        {{ form.address }}
-        {{ form.address.errors }}
-    </div>
-    <div class="col">
-        {{ form.grade.label }}
-        {{ form.grade }}
-        {{ form.grade.errors }}
+        {{ form.grade_section.label }}
+        {{ form.grade_section }}
+        {{ form.grade_section.errors }}
     </div>
     <div class="col">
         {{ form.gender.label }}
         {{ form.gender }}
         {{ form.gender.errors }}
     </div>
-    <button class="btn btn-primary" type="submit">Save</button>
+
+    <div class="col">
+        {{ form.address.label }}
+        {{ form.address }}
+        {{ form.address.errors }}
+    </div>
+
+    <div class="col mb-3">
+        {{ form.parent_name.label }}
+        {{ form.parent_name }}
+        {{ form.parent_name.errors }}
+    </div>
+
+    <div class="col mb-3">
+        {{ form.parent_phone.label }}
+        {{ form.parent_phone }}
+        {{ form.parent_phone.errors }}
+    </div>
+    <button class="w-100 btn btn-lg btn-primary" type="submit">Save</button>
 </form>
 
 
